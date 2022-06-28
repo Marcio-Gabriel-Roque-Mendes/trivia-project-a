@@ -1,4 +1,4 @@
-const TOKEN_KEY = 'TOKEN_KEY';
+const TOKEN_KEY = 'token';
 
 if (!JSON.parse(localStorage.getItem(TOKEN_KEY))) {
   localStorage.setItem(TOKEN_KEY, JSON.stringify([]));

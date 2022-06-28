@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../store/Actions';
+import { getToken } from '../services/fethApiTrivia';
+import { addToken } from '../services/saveToken';
+import { login } from '../store/Actions/index';
 
 class Login extends Component {
   state = {
@@ -13,10 +15,13 @@ class Login extends Component {
     this.setState({ [target.name]: target.value });
   };
 
-  handleBtnClick = () => {
-    const { dispatchLoginInfo } = this.props;
-
-    dispatchLoginInfo({ ...this.state });
+  handleBtnClick = async () => {
+    const { dispatchLoginInfo, history } = this.props;
+    const { name, gravatarEmail } = this.state;
+    const token = await getToken();
+    addToken(token);
+    dispatchLoginInfo({ name, gravatarEmail });
+    history.push('/games');
   }
 
   render() {
@@ -53,6 +58,9 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatchLoginInfo: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

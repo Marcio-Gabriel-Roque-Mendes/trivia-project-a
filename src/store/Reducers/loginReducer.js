@@ -1,12 +1,14 @@
+import { LOGIN } from '../Actions/actionTypes';
+
 const initialState = {
   name: '',
-  email: '',
+  gravatarEmail: '',
 };
 
 function loginReducer(state = initialState, action) {
   switch (action.type) {
-  case 'LOGIN':
-    return action.value;
+  case LOGIN:
+    return { ...state, ...action.value };
   default:
     return state;
   }

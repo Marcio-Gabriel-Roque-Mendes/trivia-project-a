@@ -1,2 +1,2 @@
 export const LOGIN = 'LOGIN';
-export const GENERIC = 'GENERIC';
+export const x = 'x';

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { login } from '../store/Actions';
 
 class Login extends Component {
@@ -13,7 +14,7 @@ class Login extends Component {
   };
 
   handleBtnClick = () => {
-    const { enterTrivia } = this.props;
+    const { dispatchLoginInfo } = this.props;
 
     dispatchLoginInfo({ ...this.state });
   }
@@ -49,6 +50,10 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  dispatchLoginInfo: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLoginInfo: (state) => dispatch(login(state)),

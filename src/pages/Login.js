@@ -17,11 +17,10 @@ class Login extends Component {
 
   handleBtnClick = async () => {
     const { dispatchLoginInfo, history } = this.props;
-    const { name, gravatarEmail } = this.state;
     const token = await getToken();
     addToken(token);
-    dispatchLoginInfo({ name, gravatarEmail });
-    history.push('/games');
+    dispatchLoginInfo({ ...this.state });
+    history.push('/game');
   }
 
   render() {

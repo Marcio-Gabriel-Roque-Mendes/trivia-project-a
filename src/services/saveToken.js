@@ -6,7 +6,7 @@ if (!JSON.parse(localStorage.getItem(TOKEN_KEY))) {
 const readToken = () => JSON.parse(localStorage.getItem(TOKEN_KEY));
 
 const saveToken = (SavedItens) => localStorage
-  .setItem(TOKEN_KEY, JSON.stringify(SavedItens));
+  .setItem(TOKEN_KEY, SavedItens);
 
 // --------------------------------------------------------------------
 // Esse codigo foi copiado do projeto trybetunes e é de autoria da trybe.
@@ -19,7 +19,8 @@ export const getToken = () => {
 
 export const addToken = (Item) => {
   if (Item) {
-    const SavedItens = readToken();
-    saveToken([...SavedItens, Item]);
+    // const SavedItens = readToken();
+    console.log(typeof Item);
+    saveToken(Item);
   }
 };

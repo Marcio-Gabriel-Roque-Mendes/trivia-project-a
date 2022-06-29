@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
 import './CardGame.css';
+<<<<<<< HEAD
 import NextButton from './NextButton';
+=======
+import { score } from '../store/Actions';
+>>>>>>> 516df34cfced5e38632a4aa576ee3921f0e51336
 
 class CardGame extends React.Component {
   state = {
@@ -18,6 +23,7 @@ class CardGame extends React.Component {
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
+    const CORRECT = 'correct-answer';
     const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {
@@ -28,17 +34,21 @@ class CardGame extends React.Component {
       const answerReceived = response.results.map((result) => [
         {
           answer: result.correct_answer,
-          className: 'correct-answer',
-          dataTestId: 'correct-answer',
+          className: CORRECT,
+          dataTestId: CORRECT,
           difficulty: result.difficulty,
         },
         ...result.incorrect_answers.map((wrong, i) => ({
           answer: wrong,
           className: 'wrong-answer',
           dataTestId: `wrong-answer-${i}`,
+          difficulty: result.difficulty,
         })),
       ].sort(() => SORT_NUMBER - Math.random()));
+<<<<<<< HEAD
 
+=======
+>>>>>>> 516df34cfced5e38632a4aa576ee3921f0e51336
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
@@ -69,8 +79,22 @@ class CardGame extends React.Component {
     });
   };
 
-  handleButtonClick = () => {
+  handleButtonClick = (item) => {
     clearInterval(this.intervalId);
+    const difficultyValue = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const POINT = 10;
+    const { dispatchScore } = this.props;
+    const { secondsAmount } = this.state;
+    const { className, difficulty } = item;
+    if (className === 'correct-answer') {
+      const valor = POINT + (secondsAmount * difficultyValue[difficulty]);
+      dispatchScore(valor);
+    }
+    console.log(item);
     this.setState({ isClicked: true });
   }
 
@@ -103,7 +127,7 @@ class CardGame extends React.Component {
                         key={ question.dataTestId }
                         type="button"
                         data-testid={ question.dataTestId }
-                        onClick={ this.handleButtonClick }
+                        onClick={ () => this.handleButtonClick(question) }
                         disabled={ timeOver }
                         className={ isClicked ? question.className : undefined }
                         difficulty={ question.difficulty }
@@ -125,9 +149,14 @@ class CardGame extends React.Component {
 }
 // Só para commitar
 CardGame.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default CardGame;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (state) => dispatch(score(state)),
+});
+
+export default connect(null, mapDispatchToProps)(CardGame);

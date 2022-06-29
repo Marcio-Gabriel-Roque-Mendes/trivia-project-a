@@ -23,8 +23,9 @@ class CardGame extends React.Component {
     }
   }
 
-  handleButtonClick = () => {
+  handleButtonClick = (index) => {
     this.setState({ isClicked: true });
+    console.log(index);
   }
 
   render() {
@@ -52,7 +53,7 @@ class CardGame extends React.Component {
                             ? `wrong-answer-${index - 1}`
                             : 'correct-answer'
                         }
-                        onClick={ this.handleButtonClick }
+                        onClick={ () => this.handleButtonClick(index) }
                         className={ isClicked && (
                           index ? 'wrong-answer' : 'correct-answer') }
                       >

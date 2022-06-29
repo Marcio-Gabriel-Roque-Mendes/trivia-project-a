@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
+import './CardGame.css';
 
 class CardGame extends React.Component {
   state = {
     questions: [],
+    isClicked: false,
   }
 
   async componentDidMount() {
@@ -21,8 +23,12 @@ class CardGame extends React.Component {
     }
   }
 
+  handleButtonClick = () => {
+    this.setState({ isClicked: true });
+  }
+
   render() {
-    const { questions } = this.state;
+    const { questions, isClicked } = this.state;
     const SORT_NUMBER = 0.5;
     return (
       <div>
@@ -46,6 +52,9 @@ class CardGame extends React.Component {
                             ? `wrong-answer-${index - 1}`
                             : 'correct-answer'
                         }
+                        onClick={ this.handleButtonClick }
+                        className={ isClicked && (
+                          index ? 'wrong-answer' : 'correct-answer') }
                       >
                         {question}
                       </button>

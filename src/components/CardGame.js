@@ -8,8 +8,11 @@ import NextButton from './NextButton';
 class CardGame extends React.Component {
   state = {
     questions: [],
+    answers: [],
     isClicked: false,
     count: 0,
+    secondsAmount: 30,
+    timeOver: false,
   }
 
   async componentDidMount() {
@@ -21,7 +24,39 @@ class CardGame extends React.Component {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      this.setState({ questions: response.results });
+      const INCORRECT = 'wrong-answer';
+      const SORT_NUMBER = 0.5;
+      const answerReceived = [
+        {
+          answer: response.results[0].correct_answer,
+          className: 'correct-answer',
+          dataTestId: 'correct-answer',
+        },
+        {
+          answer: response.results[0].incorrect_answers[0],
+          className: INCORRECT,
+          dataTestId: 'wrong-answer-0',
+        },
+        {
+          answer: response.results[0].incorrect_answers[1],
+          className: INCORRECT,
+          dataTestId: 'wrong-answer-1',
+        },
+        {
+          answer: response.results[0].incorrect_answers[2],
+          className: INCORRECT,
+          dataTestId: 'wrong-answer-2',
+        },
+      ].sort(() => SORT_NUMBER - Math.random());
+      this.setState({ questions: response.results, answers: answerReceived });
+    }
+    this.startTimer();
+  }
+
+  componentDidUpdate() {
+    const { secondsAmount } = this.state;
+    if (secondsAmount === 0) {
+      this.handleTimeOver();
     }
   }
 
@@ -29,18 +64,26 @@ class CardGame extends React.Component {
     this.setState((prevState) => ({ count: prevState.count + 1, isClicked: false }));
   }
 
+  handleTimeOver = () => {
+    clearInterval(this.intervalId);
+    this.setState({
+      secondsAmount: 'Over',
+      timeOver: true,
+      isClicked: true,
+    });
+  };
+
   handleButtonClick = () => {
     this.setState({ isClicked: true });
+    console.log('passou');
   }
 
   render() {
-    const { questions, isClicked, count } = this.state;
-
-    const SORT_NUMBER = 0.5;
+    const { questions, isClicked, secondsAmount, timeOver, answers } = this.state;
     return (
       <div>
         <p>Meu Jogo</p>
-
+        <span>{String(secondsAmount).padStart(2, '0')}</span>
         {
           questions.length && (
             <div>
@@ -48,25 +91,22 @@ class CardGame extends React.Component {
               <p data-testid="question-text">{questions[count].question}</p>
               <div data-testid="answer-options">
                 {
-                  [questions[count].correct_answer, ...questions[count]
-                    .incorrect_answers]
-                    .map((question, index) => (
+                  answers.map((question) => (
+                    question.answer
+                    && (
                       <button
-                        key={ index }
+                        key={ question.dataTestId }
                         type="button"
-                        data-testid={
-                          index
-                            ? `wrong-answer-${index - 1}`
-                            : 'correct-answer'
-                        }
+                        data-testid={ question.dataTestId }
                         onClick={ this.handleButtonClick }
-                        className={ isClicked && (
-                          index ? 'wrong-answer' : 'correct-answer') }
+                        disabled={ timeOver }
+                        className={ isClicked ? question.className : undefined }
                       >
-                        {question}
+                        {question.answer}
                       </button>
-                    ))
-                    .sort(() => SORT_NUMBER - Math.random())
+                    )
+                  ))
+
                 }
               </div>
               {isClicked && <NextButton onClick={ this.handleNextButton } /> }

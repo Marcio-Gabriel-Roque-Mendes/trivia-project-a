@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
 import './CardGame.css';
+import { score } from '../store/Actions';
 
 class CardGame extends React.Component {
   state = {
@@ -16,49 +18,28 @@ class CardGame extends React.Component {
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
+    const CORRECT = 'correct-answer';
     const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      // const INCORRECT = 'wrong-answer';
       const SORT_NUMBER = 0.5;
       const answerReceived = response.results.map((result) => [
         {
           answer: result.correct_answer,
-          className: 'correct-answer',
-          dataTestId: 'correct-answer',
+          className: CORRECT,
+          dataTestId: CORRECT,
           difficulty: result.difficulty,
         },
         ...result.incorrect_answers.map((wrong, i) => ({
           answer: wrong,
           className: 'wrong-answer',
           dataTestId: `wrong-answer-${i}`,
+          difficulty: result.difficulty,
         })),
       ].sort(() => SORT_NUMBER - Math.random()));
-      // const answerReceived = [
-      //   {
-      //     answer: response.results[0].correct_answer,
-      //     className: 'correct-answer',
-      //     dataTestId: 'correct-answer',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[0],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-0',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[1],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-1',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[2],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-2',
-      //   },
-      // ].sort(() => SORT_NUMBER - Math.random());
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
@@ -80,8 +61,22 @@ class CardGame extends React.Component {
     });
   };
 
-  handleButtonClick = () => {
+  handleButtonClick = (item) => {
     clearInterval(this.intervalId);
+    const difficultyValue = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const POINT = 10;
+    const { dispatchScore } = this.props;
+    const { secondsAmount } = this.state;
+    const { className, difficulty } = item;
+    if (className === 'correct-answer') {
+      const valor = POINT + (secondsAmount * difficultyValue[difficulty]);
+      dispatchScore(valor);
+    }
+    console.log(item);
     this.setState({ isClicked: true });
   }
 
@@ -126,7 +121,7 @@ class CardGame extends React.Component {
                         key={ question.dataTestId }
                         type="button"
                         data-testid={ question.dataTestId }
-                        onClick={ this.handleButtonClick }
+                        onClick={ () => this.handleButtonClick(question) }
                         disabled={ timeOver }
                         className={ isClicked ? question.className : undefined }
                         difficulty={ question.difficulty }
@@ -147,9 +142,14 @@ class CardGame extends React.Component {
 }
 // Só para commitar
 CardGame.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default CardGame;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (state) => dispatch(score(state)),
+});
+
+export default connect(null, mapDispatchToProps)(CardGame);

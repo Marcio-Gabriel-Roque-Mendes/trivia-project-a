@@ -24,7 +24,6 @@ class CardGame extends React.Component {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      // const INCORRECT = 'wrong-answer';
       const SORT_NUMBER = 0.5;
       const answerReceived = response.results.map((result) => [
         {
@@ -39,28 +38,7 @@ class CardGame extends React.Component {
           dataTestId: `wrong-answer-${i}`,
         })),
       ].sort(() => SORT_NUMBER - Math.random()));
-      // const answerReceived = [
-      //   {
-      //     answer: response.results[0].correct_answer,
-      //     className: 'correct-answer',
-      //     dataTestId: 'correct-answer',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[0],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-0',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[1],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-1',
-      //   },
-      //   {
-      //     answer: response.results[0].incorrect_answers[2],
-      //     className: INCORRECT,
-      //     dataTestId: 'wrong-answer-2',
-      //   },
-      // ].sort(() => SORT_NUMBER - Math.random());
+
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
@@ -92,7 +70,7 @@ class CardGame extends React.Component {
   }
 
   render() {
-    const { questions, isClicked, secondsAmount, timeOver, answers } = this.state;
+    const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
       <div>
         <p>Meu Jogo</p>
@@ -104,7 +82,7 @@ class CardGame extends React.Component {
               <p data-testid="question-text">{questions[count].question}</p>
               <div data-testid="answer-options">
                 {
-                  answers[0].map((question) => (
+                  answers[count].map((question) => (
                     question.answer
                     && (
                       <button

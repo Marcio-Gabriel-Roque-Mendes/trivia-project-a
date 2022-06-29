@@ -9,6 +9,7 @@ class NextButton extends Component {
         <button
           type="button"
           onClick={ onClick }
+          data-testid="btn-next"
         >
           Next
         </button>

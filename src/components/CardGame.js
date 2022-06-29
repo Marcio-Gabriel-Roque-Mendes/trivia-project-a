@@ -52,7 +52,12 @@ class CardGame extends React.Component {
   }
 
   handleNextButton = () => {
+    const { count } = this.state;
+    const { history } = this.props;
+    const LAST_QUESTION = 4;
+
     this.setState((prevState) => ({ count: prevState.count + 1, isClicked: false }));
+    if (count === LAST_QUESTION) history.push('/feedback');
   }
 
   handleTimeOver = () => {
@@ -68,6 +73,15 @@ class CardGame extends React.Component {
     clearInterval(this.intervalId);
     this.setState({ isClicked: true });
   }
+
+  startTimer = () => {
+    const ONE_SECOND_IN_MS = 1000;
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        secondsAmount: prevState.secondsAmount - 1,
+      }));
+    }, ONE_SECOND_IN_MS);
+  };
 
   render() {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;

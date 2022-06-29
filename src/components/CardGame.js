@@ -22,31 +22,43 @@ class CardGame extends React.Component {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      const INCORRECT = 'wrong-answer';
+      // const INCORRECT = 'wrong-answer';
       const SORT_NUMBER = 0.5;
-      const answerReceived = [
+      const teste = response.results.map((result) => [
         {
-          answer: response.results[0].correct_answer,
+          answer: result.correct_answer,
           className: 'correct-answer',
           dataTestId: 'correct-answer',
         },
-        {
-          answer: response.results[0].incorrect_answers[0],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-0',
-        },
-        {
-          answer: response.results[0].incorrect_answers[1],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-1',
-        },
-        {
-          answer: response.results[0].incorrect_answers[2],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-2',
-        },
-      ].sort(() => SORT_NUMBER - Math.random());
-      this.setState({ questions: response.results, answers: answerReceived });
+        ...result.incorrect_answers.map((wrong, i) => ({
+          answer: wrong,
+          className: 'wrong-answer',
+          dataTestId: `wrong-answer-${i}`,
+        })),
+      ].sort(() => SORT_NUMBER - Math.random()));
+      // const answerReceived = [
+      //   {
+      //     answer: response.results[0].correct_answer,
+      //     className: 'correct-answer',
+      //     dataTestId: 'correct-answer',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[0],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-0',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[1],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-1',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[2],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-2',
+      //   },
+      // ].sort(() => SORT_NUMBER - Math.random());
+      this.setState({ questions: response.results, answers: teste });
     }
     this.startTimer();
   }
@@ -106,7 +118,7 @@ class CardGame extends React.Component {
               <p data-testid="question-text">{questions[0].question}</p>
               <div data-testid="answer-options">
                 {
-                  answers.map((question) => (
+                  answers[0].map((question) => (
                     question.answer
                     && (
                       <button

@@ -24,7 +24,7 @@ class CardGame extends React.Component {
     } else {
       // const INCORRECT = 'wrong-answer';
       const SORT_NUMBER = 0.5;
-      const teste = response.results.map((result) => [
+      const answerReceived = response.results.map((result) => [
         {
           answer: result.correct_answer,
           className: 'correct-answer',
@@ -58,7 +58,7 @@ class CardGame extends React.Component {
       //     dataTestId: 'wrong-answer-2',
       //   },
       // ].sort(() => SORT_NUMBER - Math.random());
-      this.setState({ questions: response.results, answers: teste });
+      this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
   }

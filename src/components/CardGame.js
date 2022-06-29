@@ -60,7 +60,7 @@ class CardGame extends React.Component {
     );
   }
 }
-
+// Só para commitar
 CardGame.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

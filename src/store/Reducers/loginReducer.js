@@ -2,6 +2,8 @@ import { LOGIN } from '../Actions/actionTypes';
 
 const initialState = {
   name: '',
+  assertions: '',
+  score: '',
   gravatarEmail: '',
 };
 

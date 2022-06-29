@@ -11,7 +11,6 @@ class CardGame extends React.Component {
     isClicked: false,
     secondsAmount: 30,
     timeOver: false,
-    firstTime: true,
   }
 
   async componentDidMount() {
@@ -53,8 +52,7 @@ class CardGame extends React.Component {
   }
 
   componentDidUpdate() {
-    const { secondsAmount, firstTime } = this.state;
-    if (firstTime) this.setState({ firstTime: false });
+    const { secondsAmount } = this.state;
     if (secondsAmount === 0) {
       this.handleTimeOver();
     }

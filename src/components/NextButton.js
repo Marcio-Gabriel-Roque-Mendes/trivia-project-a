@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class NextButton extends Component {
   render() {
+    const { onClick } = this.props;
     return (
       <div>
-        a
+        <button
+          type="button"
+          onClick={ onClick }
+        >
+          Next
+        </button>
       </div>
     );
   }
 }
 
-// NextButton.propTypes = {
-
-// };
+NextButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 export default NextButton;

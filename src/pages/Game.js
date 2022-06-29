@@ -8,7 +8,9 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <CardGame { ...this.props } />
+        <CardGame
+          { ...this.props }
+        />
       </div>
     );
   }

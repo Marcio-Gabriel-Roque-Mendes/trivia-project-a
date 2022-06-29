@@ -29,6 +29,7 @@ class CardGame extends React.Component {
           answer: result.correct_answer,
           className: 'correct-answer',
           dataTestId: 'correct-answer',
+          difficulty: result.difficulty,
         },
         ...result.incorrect_answers.map((wrong, i) => ({
           answer: wrong,
@@ -80,8 +81,8 @@ class CardGame extends React.Component {
   };
 
   handleButtonClick = () => {
+    clearInterval(this.intervalId);
     this.setState({ isClicked: true });
-    console.log('passou');
   }
 
   startTimer = () => {
@@ -128,6 +129,7 @@ class CardGame extends React.Component {
                         onClick={ this.handleButtonClick }
                         disabled={ timeOver }
                         className={ isClicked ? question.className : undefined }
+                        difficulty={ question.difficulty }
                       >
                         {question.answer}
                       </button>

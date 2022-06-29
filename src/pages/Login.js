@@ -67,7 +67,11 @@ Login.propTypes = {
   dispatchLoginInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
+  }),
+};
+
+Login.defaultProps = {
+  history: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({

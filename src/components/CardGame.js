@@ -24,30 +24,43 @@ class CardGame extends React.Component {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      const INCORRECT = 'wrong-answer';
+      // const INCORRECT = 'wrong-answer';
       const SORT_NUMBER = 0.5;
-      const answerReceived = [
+      const answerReceived = response.results.map((result) => [
         {
-          answer: response.results[0].correct_answer,
+          answer: result.correct_answer,
           className: 'correct-answer',
           dataTestId: 'correct-answer',
+          difficulty: result.difficulty,
         },
-        {
-          answer: response.results[0].incorrect_answers[0],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-0',
-        },
-        {
-          answer: response.results[0].incorrect_answers[1],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-1',
-        },
-        {
-          answer: response.results[0].incorrect_answers[2],
-          className: INCORRECT,
-          dataTestId: 'wrong-answer-2',
-        },
-      ].sort(() => SORT_NUMBER - Math.random());
+        ...result.incorrect_answers.map((wrong, i) => ({
+          answer: wrong,
+          className: 'wrong-answer',
+          dataTestId: `wrong-answer-${i}`,
+        })),
+      ].sort(() => SORT_NUMBER - Math.random()));
+      // const answerReceived = [
+      //   {
+      //     answer: response.results[0].correct_answer,
+      //     className: 'correct-answer',
+      //     dataTestId: 'correct-answer',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[0],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-0',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[1],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-1',
+      //   },
+      //   {
+      //     answer: response.results[0].incorrect_answers[2],
+      //     className: INCORRECT,
+      //     dataTestId: 'wrong-answer-2',
+      //   },
+      // ].sort(() => SORT_NUMBER - Math.random());
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
@@ -74,8 +87,8 @@ class CardGame extends React.Component {
   };
 
   handleButtonClick = () => {
+    clearInterval(this.intervalId);
     this.setState({ isClicked: true });
-    console.log('passou');
   }
 
   render() {
@@ -91,7 +104,7 @@ class CardGame extends React.Component {
               <p data-testid="question-text">{questions[count].question}</p>
               <div data-testid="answer-options">
                 {
-                  answers.map((question) => (
+                  answers[0].map((question) => (
                     question.answer
                     && (
                       <button
@@ -101,6 +114,7 @@ class CardGame extends React.Component {
                         onClick={ this.handleButtonClick }
                         disabled={ timeOver }
                         className={ isClicked ? question.className : undefined }
+                        difficulty={ question.difficulty }
                       >
                         {question.answer}
                       </button>

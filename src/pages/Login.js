@@ -25,6 +25,7 @@ class Login extends Component {
 
   render() {
     const { name, gravatarEmail } = this.state;
+    const { history } = this.props;
 
     return (
       <div>
@@ -49,6 +50,13 @@ class Login extends Component {
           onClick={ this.handleBtnClick }
         >
           Play
+        </button>
+        <button
+          type="button"
+          onClick={ () => history.push('/settings') }
+          data-testid="btn-settings"
+        >
+          Configurações
         </button>
       </div>
     );

@@ -2,7 +2,7 @@ import { LOGIN, SCORE } from '../Actions/actionTypes';
 
 const initialState = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };

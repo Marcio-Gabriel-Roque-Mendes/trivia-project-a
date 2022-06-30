@@ -20,7 +20,6 @@ export const getToken = () => {
 export const addToken = (Item) => {
   if (Item) {
     // const SavedItens = readToken();
-    console.log(typeof Item);
     saveToken(Item);
   }
 };

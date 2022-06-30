@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
 import './CardGame.css';
+import NextButton from './NextButton';
 import { score } from '../store/Actions';
 
 class CardGame extends React.Component {
@@ -11,6 +12,7 @@ class CardGame extends React.Component {
     questions: [],
     answers: [],
     isClicked: false,
+    count: 0,
     secondsAmount: 30,
     timeOver: false,
   }
@@ -40,6 +42,7 @@ class CardGame extends React.Component {
           difficulty: result.difficulty,
         })),
       ].sort(() => SORT_NUMBER - Math.random()));
+
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();
@@ -50,6 +53,15 @@ class CardGame extends React.Component {
     if (secondsAmount === 0) {
       this.handleTimeOver();
     }
+  }
+
+  handleNextButton = () => {
+    const { count } = this.state;
+    const { history } = this.props;
+    const LAST_QUESTION = 4;
+
+    this.setState((prevState) => ({ count: prevState.count + 1, isClicked: false }));
+    if (count === LAST_QUESTION) history.push('/feedback');
   }
 
   handleTimeOver = () => {
@@ -85,24 +97,12 @@ class CardGame extends React.Component {
     this.intervalId = setInterval(() => {
       this.setState((prevState) => ({
         secondsAmount: prevState.secondsAmount - 1,
-        firstTime: false,
       }));
     }, ONE_SECOND_IN_MS);
   };
 
-  sortOneTime = (array) => {
-    const { firstTime } = this.state;
-    const SORT_NUMBER = 0.5;
-    const arraySorted = array.sort(() => SORT_NUMBER - Math.random());
-    if (firstTime) {
-      this.arraySaved = [...arraySorted];
-      return arraySorted;
-    }
-    return this.arraySaved;
-  }
-
   render() {
-    const { questions, isClicked, secondsAmount, timeOver, answers } = this.state;
+    const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
       <div>
         <p>Meu Jogo</p>
@@ -110,11 +110,11 @@ class CardGame extends React.Component {
         {
           questions.length && (
             <div>
-              <p data-testid="question-category">{questions[0].category}</p>
-              <p data-testid="question-text">{questions[0].question}</p>
+              <p data-testid="question-category">{questions[count].category}</p>
+              <p data-testid="question-text">{questions[count].question}</p>
               <div data-testid="answer-options">
                 {
-                  answers[0].map((question) => (
+                  answers[count].map((question) => (
                     question.answer
                     && (
                       <button
@@ -133,6 +133,7 @@ class CardGame extends React.Component {
 
                 }
               </div>
+              {isClicked && <NextButton onClick={ this.handleNextButton } /> }
             </div>
           )
         }

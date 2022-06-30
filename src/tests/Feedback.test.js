@@ -84,34 +84,3 @@ describe('Teste do component Feedback', () => {
         expect(heading).toBeInTheDocument()
     })
 })
-
-// it('Acessando o FeedBack', async () => {
-    //     const { history } = renderWithRouterAndRedux(<App />);
-        
-    //     const campoName = screen.getByTestId('input-player-name');
-    //     userEvent.type(campoName, 'Ada Love')
-
-    //     const campoEmailGravatar = screen.getByTestId('input-gravatar-email')
-    //     userEvent.type(campoEmailGravatar, 'adalove@email.com');
-
-    //     const botaoPlay = await screen.findByRole('button', {name: /play/i})
-    //     userEvent.click(botaoPlay);
-
-        
-    //     const respostaCerta1 = await screen.findByTestId('correct-answer');
-    //     userEvent.click(respostaCerta1)
-    //     const nextButton = await screen.findByRole('button', {name: /next/i});
-    //     userEvent.click(nextButton);
-
-    //     const respostaCerta2 = await screen.findByTestId('correct-answer');
-    //     userEvent.click(respostaCerta2)
-
-    //     const respostaCerta3 = await screen.findByTestId('correct-answer');
-    //     userEvent.click(respostaCerta3)
-        
-    //     const respostaCerta4 = await screen.findByTestId('correct-answer');
-    //     userEvent.click(respostaCerta4)
-
-    //     const respostaCerta5 = await screen.findByTestId('correct-answer');
-    //     userEvent.click(respostaCerta5)
-    // })

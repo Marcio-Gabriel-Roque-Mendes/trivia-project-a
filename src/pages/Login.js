@@ -36,6 +36,7 @@ class Login extends Component {
           value={ name }
           onChange={ this.handleChange }
         />
+
         <input
           name="gravatarEmail"
           type="email"

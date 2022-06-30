@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux'
 import Login from '../pages/Login';
+import App from '../App';
 
 describe('Testes do component Login', () => {
     it('Verifique se os inputs e botões estão visiveis para o usuario', () => {
@@ -21,13 +22,35 @@ describe('Testes do component Login', () => {
         const botaoConf = screen.getByRole('button', {name: /configurações/i});
         expect(botaoConf).toBeInTheDocument();
     })
-    // it('', () => {
-    //     renderWithRouterAndRedux(<Login />);
-    //     const campos = screen.getAllByRole('textbox')
-        
-    //     const campoName = campos[0];
-    //     userEvent.type('Ada Love')
 
-    //     const campoEmailGravatar = campos[1];
-    // })
+    it('Verifique se ao logar, a tela é redirecionada para a pagina /game', async () => {
+        const { history } = renderWithRouterAndRedux(<App />);
+        
+        const campoName = screen.getByTestId('input-player-name');
+        userEvent.type(campoName, 'Ada Love')
+
+        const campoEmailGravatar = screen.getByTestId('input-gravatar-email')
+        userEvent.type(campoEmailGravatar, 'adalove@email.com');
+
+        const botaoPlay = await screen.findByRole('button', {name: /play/i})
+        userEvent.click(botaoPlay);
+
+        // expect(botaoPlay).toHaveBeenCalled()
+
+        const textoTelaDoJogo = await screen.findByText("Meu Jogo");
+        expect(textoTelaDoJogo).toBeInTheDocument();
+
+        expect(history.location.pathname).toBe('/game');
+    
+    })
+    it('Verifica se existe um botão de configurações, e se clicado redireciona para /settings', () => {
+        const { history } = renderWithRouterAndRedux(< App/>);
+        
+        history.push('/')
+        const botaoConf = screen.getByRole('button', {name: /configurações/i});
+        expect(botaoConf).toBeInTheDocument();
+
+        userEvent.click(botaoConf)
+        expect(history.location.pathname).toBe('/settings');
+    })
 })

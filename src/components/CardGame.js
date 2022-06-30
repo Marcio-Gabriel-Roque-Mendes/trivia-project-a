@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
 import './CardGame.css';
-<<<<<<< HEAD
 import NextButton from './NextButton';
-=======
 import { score } from '../store/Actions';
->>>>>>> 516df34cfced5e38632a4aa576ee3921f0e51336
 
 class CardGame extends React.Component {
   state = {
@@ -45,10 +42,7 @@ class CardGame extends React.Component {
           difficulty: result.difficulty,
         })),
       ].sort(() => SORT_NUMBER - Math.random()));
-<<<<<<< HEAD
 
-=======
->>>>>>> 516df34cfced5e38632a4aa576ee3921f0e51336
       this.setState({ questions: response.results, answers: answerReceived });
     }
     this.startTimer();

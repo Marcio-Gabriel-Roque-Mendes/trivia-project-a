@@ -60,7 +60,10 @@ class CardGame extends React.Component {
     const { history } = this.props;
     const LAST_QUESTION = 4;
 
-    this.setState((prevState) => ({ count: prevState.count + 1, isClicked: false }));
+    this.setState((prevState) => ({ count: prevState.count + 1,
+      isClicked: false,
+      secondsAmount: 30,
+    }), this.startTimer());
     if (count === LAST_QUESTION) history.push('/feedback');
   }
 

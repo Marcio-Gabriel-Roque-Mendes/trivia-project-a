@@ -8,6 +8,8 @@ import { login } from '../store/Actions/index';
 class Login extends Component {
   state = {
     name: '',
+    score: 0,
+    assertions: 0,
     gravatarEmail: '',
   };
 

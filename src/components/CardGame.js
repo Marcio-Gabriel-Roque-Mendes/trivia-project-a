@@ -91,7 +91,6 @@ class CardGame extends React.Component {
       const valor = POINT + (secondsAmount * difficultyValue[difficulty]);
       dispatchScore(valor);
     }
-    console.log(item);
     this.setState({ isClicked: true });
   }
 

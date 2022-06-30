@@ -5,7 +5,7 @@ import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux'
 import Login from '../pages/Login';
 import App from '../App';
 
-describe('Testes do component Login', () => {
+describe('Testes do componente Login', () => {
     it('Verifique se os inputs e botões estão visiveis para o usuario', () => {
         const { history } = renderWithRouterAndRedux(<Login />)
         const campos = screen.getAllByRole('textbox')
@@ -34,8 +34,6 @@ describe('Testes do component Login', () => {
 
         const botaoPlay = await screen.findByRole('button', {name: /play/i})
         userEvent.click(botaoPlay);
-
-        // expect(botaoPlay).toHaveBeenCalled()
 
         const textoTelaDoJogo = await screen.findByText("Meu Jogo");
         expect(textoTelaDoJogo).toBeInTheDocument();

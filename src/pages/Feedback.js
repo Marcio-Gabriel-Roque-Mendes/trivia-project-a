@@ -1,15 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+import createEmailUrl from '../services/createEmailUrl';
 
 class Feedback extends React.Component {
-  createEmailUrl = () => {
-    const { gravatarEmail } = this.props;
-    const hash = md5(gravatarEmail).toString();
-    return `https://www.gravatar.com/avatar/${hash}`;
-  };
-
   handleClick = () => {
     const { history } = this.props;
     history.push('/');
@@ -28,7 +22,7 @@ class Feedback extends React.Component {
         <header>
           <img
             data-testid="header-profile-picture"
-            src={ this.createEmailUrl() }
+            src={ createEmailUrl(gravatarEmail) }
             alt={ gravatarEmail }
           />
           <p data-testid="header-player-name">{name}</p>

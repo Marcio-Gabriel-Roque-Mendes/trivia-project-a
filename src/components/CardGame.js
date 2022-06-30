@@ -5,7 +5,9 @@ import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
 import './CardGame.css';
 import NextButton from './NextButton';
-import { score } from '../store/Actions';
+import { score as saveScore } from '../store/Actions';
+import { addInRanking } from '../services/saveRanking';
+import createEmailUrl from '../services/createEmailUrl';
 
 class CardGame extends React.Component {
   state = {
@@ -72,7 +74,10 @@ class CardGame extends React.Component {
       }),
       this.startTimer(),
     );
-    if (count === LAST_QUESTION) history.push('/feedback');
+    if (count === LAST_QUESTION) {
+      this.savePlayerInRanking();
+      history.push('/feedback');
+    }
   };
 
   handleTimeOver = () => {
@@ -111,6 +116,16 @@ class CardGame extends React.Component {
     }, ONE_SECOND_IN_MS);
   };
 
+  savePlayerInRanking = () => {
+    const { name, score, gravatarEmail } = this.props;
+    const playerInfo = {
+      name,
+      score,
+      picture: createEmailUrl(gravatarEmail),
+    };
+    addInRanking(playerInfo);
+  }
+
   render() {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
@@ -147,6 +162,9 @@ class CardGame extends React.Component {
 }
 // Só para commitar
 CardGame.propTypes = {
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
@@ -154,7 +172,13 @@ CardGame.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchScore: (state) => dispatch(score(state)),
+  dispatchScore: (state) => dispatch(saveScore(state)),
 });
 
-export default connect(null, mapDispatchToProps)(CardGame);
+const mapStateToProps = (globalState) => ({
+  name: globalState.player.name,
+  gravatarEmail: globalState.player.gravatarEmail,
+  score: globalState.player.score,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardGame);

@@ -15,7 +15,7 @@ class CardGame extends React.Component {
     count: 0,
     secondsAmount: 30,
     timeOver: false,
-  }
+  };
 
   async componentDidMount() {
     const { history } = this.props;
@@ -55,17 +55,25 @@ class CardGame extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   handleNextButton = () => {
     const { count } = this.state;
     const { history } = this.props;
     const LAST_QUESTION = 4;
 
-    this.setState((prevState) => ({ count: prevState.count + 1,
-      isClicked: false,
-      secondsAmount: 30,
-    }), this.startTimer());
+    this.setState(
+      (prevState) => ({
+        count: prevState.count + 1,
+        isClicked: false,
+        secondsAmount: 30,
+      }),
+      this.startTimer(),
+    );
     if (count === LAST_QUESTION) history.push('/feedback');
-  }
+  };
 
   handleTimeOver = () => {
     clearInterval(this.intervalId);
@@ -88,11 +96,11 @@ class CardGame extends React.Component {
     const { secondsAmount } = this.state;
     const { className, difficulty } = item;
     if (className === 'correct-answer') {
-      const valor = POINT + (secondsAmount * difficultyValue[difficulty]);
+      const valor = POINT + secondsAmount * difficultyValue[difficulty];
       dispatchScore(valor);
     }
     this.setState({ isClicked: true });
-  }
+  };
 
   startTimer = () => {
     const ONE_SECOND_IN_MS = 1000;
@@ -109,36 +117,30 @@ class CardGame extends React.Component {
       <div>
         <p>Meu Jogo</p>
         <span>{String(secondsAmount).padStart(2, '0')}</span>
-        {
-          questions.length && (
-            <div>
-              <p data-testid="question-category">{questions[count].category}</p>
-              <p data-testid="question-text">{questions[count].question}</p>
-              <div data-testid="answer-options">
-                {
-                  answers[count].map((question) => (
-                    question.answer
-                    && (
-                      <button
-                        key={ question.dataTestId }
-                        type="button"
-                        data-testid={ question.dataTestId }
-                        onClick={ () => this.handleButtonClick(question) }
-                        disabled={ timeOver }
-                        className={ isClicked ? question.className : undefined }
-                        difficulty={ question.difficulty }
-                      >
-                        {question.answer}
-                      </button>
-                    )
-                  ))
-
-                }
-              </div>
-              {isClicked && <NextButton onClick={ this.handleNextButton } /> }
+        {questions.length && (
+          <div>
+            <p data-testid="question-category">{questions[count].category}</p>
+            <p data-testid="question-text">{questions[count].question}</p>
+            <div data-testid="answer-options">
+              {answers[count].map(
+                (question) => question.answer && (
+                  <button
+                    key={ question.dataTestId }
+                    type="button"
+                    data-testid={ question.dataTestId }
+                    onClick={ () => this.handleButtonClick(question) }
+                    disabled={ timeOver }
+                    className={ isClicked ? question.className : undefined }
+                    difficulty={ question.difficulty }
+                  >
+                    {question.answer}
+                  </button>
+                ),
+              )}
             </div>
-          )
-        }
+            {isClicked && <NextButton onClick={ this.handleNextButton } />}
+          </div>
+        )}
       </div>
     );
   }

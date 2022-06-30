@@ -1,58 +1,142 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { getQuestion } from '../services/fethApiTrivia';
 import { getToken } from '../services/saveToken';
+import './CardGame.css';
+import NextButton from './NextButton';
+import { score } from '../store/Actions';
 
 class CardGame extends React.Component {
   state = {
     questions: [],
+    answers: [],
+    isClicked: false,
+    count: 0,
+    secondsAmount: 30,
+    timeOver: false,
   }
 
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
+    const CORRECT = 'correct-answer';
     const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      this.setState({ questions: response.results });
+      const SORT_NUMBER = 0.5;
+      const answerReceived = response.results.map((result) => [
+        {
+          answer: result.correct_answer,
+          className: CORRECT,
+          dataTestId: CORRECT,
+          difficulty: result.difficulty,
+        },
+        ...result.incorrect_answers.map((wrong, i) => ({
+          answer: wrong,
+          className: 'wrong-answer',
+          dataTestId: `wrong-answer-${i}`,
+          difficulty: result.difficulty,
+        })),
+      ].sort(() => SORT_NUMBER - Math.random()));
+
+      this.setState({ questions: response.results, answers: answerReceived });
+    }
+    this.startTimer();
+  }
+
+  componentDidUpdate() {
+    const { secondsAmount } = this.state;
+    if (secondsAmount === 0) {
+      this.handleTimeOver();
     }
   }
 
+  handleNextButton = () => {
+    const { count } = this.state;
+    const { history } = this.props;
+    const LAST_QUESTION = 4;
+
+    this.setState((prevState) => ({ count: prevState.count + 1,
+      isClicked: false,
+      secondsAmount: 30,
+    }), this.startTimer());
+    if (count === LAST_QUESTION) history.push('/feedback');
+  }
+
+  handleTimeOver = () => {
+    clearInterval(this.intervalId);
+    this.setState({
+      secondsAmount: 'Over',
+      timeOver: true,
+      isClicked: true,
+    });
+  };
+
+  handleButtonClick = (item) => {
+    clearInterval(this.intervalId);
+    const difficultyValue = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const POINT = 10;
+    const { dispatchScore } = this.props;
+    const { secondsAmount } = this.state;
+    const { className, difficulty } = item;
+    if (className === 'correct-answer') {
+      const valor = POINT + (secondsAmount * difficultyValue[difficulty]);
+      dispatchScore(valor);
+    }
+    console.log(item);
+    this.setState({ isClicked: true });
+  }
+
+  startTimer = () => {
+    const ONE_SECOND_IN_MS = 1000;
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        secondsAmount: prevState.secondsAmount - 1,
+      }));
+    }, ONE_SECOND_IN_MS);
+  };
+
   render() {
-    const { questions } = this.state;
-    const SORT_NUMBER = 0.5;
+    const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
       <div>
         <p>Meu Jogo</p>
-
+        <span>{String(secondsAmount).padStart(2, '0')}</span>
         {
           questions.length && (
             <div>
-              <p data-testid="question-category">{questions[0].category}</p>
-              <p data-testid="question-text">{questions[0].question}</p>
+              <p data-testid="question-category">{questions[count].category}</p>
+              <p data-testid="question-text">{questions[count].question}</p>
               <div data-testid="answer-options">
                 {
-                  [questions[0].correct_answer, ...questions[0]
-                    .incorrect_answers]
-                    .map((question, index) => (
+                  answers[count].map((question) => (
+                    question.answer
+                    && (
                       <button
-                        key={ index }
+                        key={ question.dataTestId }
                         type="button"
-                        data-testid={
-                          index
-                            ? `wrong-answer-${index - 1}`
-                            : 'correct-answer'
-                        }
+                        data-testid={ question.dataTestId }
+                        onClick={ () => this.handleButtonClick(question) }
+                        disabled={ timeOver }
+                        className={ isClicked ? question.className : undefined }
+                        difficulty={ question.difficulty }
                       >
-                        {question}
+                        {question.answer}
                       </button>
-                    ))
-                    .sort(() => SORT_NUMBER - Math.random())
+                    )
+                  ))
+
                 }
               </div>
+              {isClicked && <NextButton onClick={ this.handleNextButton } /> }
             </div>
           )
         }
@@ -62,9 +146,14 @@ class CardGame extends React.Component {
 }
 // Só para commitar
 CardGame.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default CardGame;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (state) => dispatch(score(state)),
+});
+
+export default connect(null, mapDispatchToProps)(CardGame);

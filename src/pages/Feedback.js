@@ -2,8 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import createEmailUrl from '../services/createEmailUrl';
+import { addInRanking } from '../services/saveRanking';
 
 class Feedback extends React.Component {
+  componentDidMount() {
+    this.savePlayerInRanking();
+  }
+
   handleClick = () => {
     const { history } = this.props;
     history.push('/');
@@ -13,6 +18,16 @@ class Feedback extends React.Component {
     const { history } = this.props;
     history.push('/ranking');
   };
+
+  savePlayerInRanking = () => {
+    const { name, score, gravatarEmail } = this.props;
+    const playerInfo = {
+      name,
+      score,
+      picture: createEmailUrl(gravatarEmail),
+    };
+    addInRanking(playerInfo);
+  }
 
   render() {
     const { name, gravatarEmail, score, assertions } = this.props;

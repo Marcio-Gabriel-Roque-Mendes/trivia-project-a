@@ -6,8 +6,8 @@ import { getToken } from '../services/saveToken';
 import './CardGame.css';
 import NextButton from './NextButton';
 import { score as saveScore } from '../store/Actions';
-import { addInRanking } from '../services/saveRanking';
-import createEmailUrl from '../services/createEmailUrl';
+// import { addInRanking } from '../services/saveRanking';
+// import createEmailUrl from '../services/createEmailUrl';
 
 class CardGame extends React.Component {
   state = {
@@ -75,7 +75,7 @@ class CardGame extends React.Component {
       this.startTimer(),
     );
     if (count === LAST_QUESTION) {
-      this.savePlayerInRanking();
+      // this.savePlayerInRanking();
       history.push('/feedback');
     }
   };
@@ -116,15 +116,15 @@ class CardGame extends React.Component {
     }, ONE_SECOND_IN_MS);
   };
 
-  savePlayerInRanking = () => {
-    const { name, score, gravatarEmail } = this.props;
-    const playerInfo = {
-      name,
-      score,
-      picture: createEmailUrl(gravatarEmail),
-    };
-    addInRanking(playerInfo);
-  }
+  // savePlayerInRanking = () => {
+  //   const { name, score, gravatarEmail } = this.props;
+  //   const playerInfo = {
+  //     name,
+  //     score,
+  //     picture: createEmailUrl(gravatarEmail),
+  //   };
+  //   addInRanking(playerInfo);
+  // }
 
   render() {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
@@ -162,9 +162,9 @@ class CardGame extends React.Component {
 }
 // Só para commitar
 CardGame.propTypes = {
-  name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
+  // name: PropTypes.string.isRequired,
+  // score: PropTypes.number.isRequired,
+  // gravatarEmail: PropTypes.string.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

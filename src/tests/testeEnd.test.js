@@ -19,11 +19,24 @@ describe('', () => {
     const botaoPlay = await screen.findByRole('button', { name: /play/i });
     userEvent.click(botaoPlay);
 
-    await waitFor(() => expect(history.location.pathname).toBe('/game'), { timeout: 3000 });
+    await waitFor(() => expect(history.location.pathname)
+      .toBe('/game'), { timeout: 3000 });
 
     const resposta = await screen.findByTestId('correct-answer', undefined, {
       timeout: 2000,
     });
-    await waitFor(() => expect(resposta).toBeDisabled(), { timeout: 32000 });
+
+    const resposta2 = await screen.findByTestId('wrong-answer-0', undefined, {
+      timeout: 2000,
+    });
+
+    userEvent.click(resposta2);
+    const nextBtn = await screen.findByTestId('btn-next', undefined, {
+      timeout: 2000,
+    });
+
+    userEvent.click(nextBtn);
+
+    await waitFor(() => expect(resposta).toBeDisabled(), { timeout: 34000 });
   });
 });

@@ -130,8 +130,8 @@ class CardGame extends React.Component {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
       <div>
-        <p>Meu Jogo</p>
-        <span>{String(secondsAmount).padStart(2, '0')}</span>
+        <p data-testid="meu-jogo">Meu Jogo</p>
+        <span data-testid="timer">{String(secondsAmount).padStart(2, '0')}</span>
         {questions.length && (
           <div>
             <p data-testid="question-category">{questions[count].category}</p>

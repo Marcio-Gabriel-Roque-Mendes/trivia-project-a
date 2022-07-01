@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
+import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import Game from '../pages/Game';
 import App from '../App';
 import { getQuestion } from '../services/fethApiTrivia';

@@ -47,7 +47,6 @@ describe('Teste do component Feedback', () => {
       expect(history.location.pathname).toBe('/ranking');
     });
 
-<<<<<<< HEAD
   it('Verifica se o heading: Could be better, esteja na tela', () => {
     const initialState = {
       player: {
@@ -84,24 +83,3 @@ describe('Teste do component Feedback', () => {
     expect(heading).toBeInTheDocument();
   });
 });
-=======
-    // player: { name: 'Player Name', gravatarEmail: 'player@email.com', score: 0, assertions: 0, } 
-
-    it('Verifica se o heading: Well Done, esteja na tela', () => {
-        const initialState = {
-            player: {
-                name: 'Player Name',
-                assertions: 3,
-                score: 0,
-                gravatarEmail: 'player@email.com',
-            }
-          };
-        const { history } = renderWithRouterAndRedux(<App />, initialState)
-        
-        history.push('/feedback');
-
-        const heading = screen.getByText(/Well Done/i);
-        expect(heading).toBeInTheDocument()
-    })
-})
->>>>>>> 7f1f40ea8ba9d49c3a215310b90f96bcf1f4358e

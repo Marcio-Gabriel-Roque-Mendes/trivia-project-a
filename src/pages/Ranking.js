@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getSavedRankings } from '../services/saveRanking';
 
 class Ranking extends React.Component {
   state = {
@@ -9,7 +8,6 @@ class Ranking extends React.Component {
 
   componentDidMount() {
     this.setState({ ranking: JSON.parse(localStorage.getItem('ranking')) });
-    console.log(getSavedRankings());
   }
 
   handleClick = () => {

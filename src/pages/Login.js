@@ -8,6 +8,8 @@ import { login } from '../store/Actions/index';
 class Login extends Component {
   state = {
     name: '',
+    score: 0,
+    assertions: 0,
     gravatarEmail: '',
   };
 
@@ -36,6 +38,7 @@ class Login extends Component {
           value={ name }
           onChange={ this.handleChange }
         />
+
         <input
           name="gravatarEmail"
           type="email"
@@ -66,8 +69,12 @@ class Login extends Component {
 Login.propTypes = {
   dispatchLoginInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+    push: PropTypes.func,
+  }),
+};
+
+Login.defaultProps = {
+  history: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({

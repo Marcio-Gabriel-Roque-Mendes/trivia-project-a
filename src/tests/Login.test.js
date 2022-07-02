@@ -35,7 +35,7 @@ describe('Testes do componente Login', () => {
         const botaoPlay = await screen.findByRole('button', {name: /play/i})
         userEvent.click(botaoPlay);
 
-        const textoTelaDoJogo = await screen.findByText("Meu Jogo");
+        const textoTelaDoJogo = await screen.findByTestId("meu-jogo");
         expect(textoTelaDoJogo).toBeInTheDocument();
 
         expect(history.location.pathname).toBe('/game');

@@ -138,8 +138,11 @@ class CardGame extends React.Component {
         {questions.length && (
           <div>
             <p data-testid="question-category">{questions[count].category}</p>
-            <p data-testid="question-text">{questions[count].question}</p>
-            <div data-testid="answer-options">
+            <p data-testid="question-text" className="leading-6">{questions[count].question}</p>
+            <div
+              data-testid="answer-options"
+              className="flex items-center justify-center gap-2 flex-wrap"
+            >
               {answers[count].map(
                 (question) => question.answer && (
                   <button

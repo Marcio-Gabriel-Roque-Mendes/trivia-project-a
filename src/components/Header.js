@@ -23,10 +23,6 @@ class Header extends React.Component {
           data-testid='header-profile-picture'
           className="rounded-full w-24"
         />
-        <p data-testid="header-player-name">
-          {name}
-        </p>
-        <p data-testid="header-score">{`Score: ${score}`}</p>
         <p data-testid='header-player-name'>{name}</p>
         <p data-testid='header-score'>{`Score: ${score}`}</p>
       </div>

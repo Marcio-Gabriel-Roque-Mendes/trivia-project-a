@@ -115,34 +115,23 @@ class CardGame extends React.Component {
     }, ONE_SECOND_IN_MS);
   };
 
-  // savePlayerInRanking = () => {
-  //   const { name, score, gravatarEmail } = this.props;
-  //   const playerInfo = {
-  //     name,
-  //     score,
-  //     picture: createEmailUrl(gravatarEmail),
-  //   };
-  //   addInRanking(playerInfo);
-  // }
-
   render() {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
-      <div className="leading-3">
+      <div className="leading-8">
         <p data-testid="meu-jogo">Meu Jogo</p>
         <span data-testid="timer">
           {String(secondsAmount).padStart(2, '0')}
         </span>
         {questions.length && (
-          <div>
+          <div className='my-3'>
             <p data-testid="question-category">{questions[count].category}</p>
-            <p data-testid="question-text" className="leading-6">
+            <p data-testid='question-text' className='leading-6 h-12'>
               {questions[count].question}
             </p>
             <div
               data-testid="answer-options"
-              className="flex items-center justify-center gap-2 flex-wrap"
-            >
+              className='flex items-center justify-center gap-2 flex-wrap my-6 h-24'>            
               {answers[count].map(
                 (question) => question.answer && (
                   <button
@@ -153,9 +142,8 @@ class CardGame extends React.Component {
                     disabled={ timeOver }
                     className={ `btn btn-primary btn-outline ${
                       isClicked ? question.className : undefined
-                    } w-56` }
-                    difficulty={ question.difficulty }
-                  >
+                    } w-80 `}
+                    difficulty={ question.difficulty }>
                     {question.answer}
                   </button>
                 ),

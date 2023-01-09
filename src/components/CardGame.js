@@ -163,7 +163,9 @@ class CardGame extends React.Component {
                 ),
               )}
             </div>
-            {isClicked && <NextButton onClick={ this.handleNextButton } />}
+            <div className="h-16">
+              {isClicked && <NextButton onClick={ this.handleNextButton } />}
+            </div>
           </div>
         )}
       </div>

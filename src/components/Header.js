@@ -13,31 +13,33 @@ class Header extends React.Component {
   render() {
     const { name, score } = this.props;
     return (
-      <div>
-        <p data-testid="header-player-name">
-          {name}
-        </p>
+      <div
+        className="flex items-center justify-evenly gap-4 text-white font-bold
+      border-solid border-2 border-pink-600 rounded-full text-3xl h-36
+      "
+      >
         <img
           src={ this.createEmailUrl() }
           alt="profile-avatar"
           data-testid="header-profile-picture"
+          className="rounded-full w-24"
         />
-        <p data-testid="header-score">{score}</p>
+        <p data-testid="header-player-name">
+          {name}
+        </p>
+        <p data-testid="header-score">{`Score: ${score}`}</p>
       </div>
     );
   }
 }
-
 const mapStateToProps = (globalState) => ({
   name: globalState.player.name,
   gravatarEmail: globalState.player.gravatarEmail,
   score: globalState.player.score,
 });
-
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
 };
-
 export default connect(mapStateToProps)(Header);

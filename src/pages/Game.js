@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import CardGame from '../components/CardGame';
+import imageBackgound from './../assets/imageBackground.jpeg'
 
 class Game extends React.Component {
   render() {

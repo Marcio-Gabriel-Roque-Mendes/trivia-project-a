@@ -70,6 +70,7 @@ class CardGame extends React.Component {
       (prevState) => ({
         count: prevState.count + 1,
         isClicked: false,
+        timeOver: false,
         secondsAmount: 30,
       }),
       this.startTimer(),

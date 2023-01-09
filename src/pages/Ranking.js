@@ -5,7 +5,7 @@ import imageBackgound from './../assets/imageBackground.jpeg'
 class Ranking extends React.Component {
   state = {
     ranking: [],
-  }
+  };
 
   componentDidMount() {
     this.setState({ ranking: JSON.parse(localStorage.getItem('ranking')) });
@@ -21,7 +21,8 @@ class Ranking extends React.Component {
 
     return (
       <div className='w-screen h-screen'>
-        <div className='bg-black text-white w-full h-full flex items-center justify-center bg-cover blur' style={{ backgroundImage: `url(${imageBackgound})` }}></div>
+        <div className='bg-black text-white w-full h-full flex items-center justify-center bg-cover blur'
+        style={{ backgroundImage: `url(${imageBackgound})` }}></div>
         <div className='absolute mx-auto w-4/5 mt-16 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2'>
           <div className='flex flex-col items-center justify-center w-full'>
             <h1
@@ -50,9 +51,16 @@ class Ranking extends React.Component {
                   </div>
                 ))}
             </div>
+            <button
+              type='button'
+              data-testid='btn-go-home'
+              onClick={this.handleClick}
+              className='btn btn-secondary mt-6'>
+              Play Again
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     );
   }
 }

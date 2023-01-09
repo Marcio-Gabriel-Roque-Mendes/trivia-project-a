@@ -138,7 +138,9 @@ class CardGame extends React.Component {
         {questions.length && (
           <div>
             <p data-testid="question-category">{questions[count].category}</p>
-            <p data-testid="question-text" className="leading-6">{questions[count].question}</p>
+            <p data-testid="question-text" className="leading-6">
+              {questions[count].question}
+            </p>
             <div
               data-testid="answer-options"
               className="flex items-center justify-center gap-2 flex-wrap"
@@ -151,7 +153,9 @@ class CardGame extends React.Component {
                     data-testid={ question.dataTestId }
                     onClick={ () => this.handleButtonClick(question) }
                     disabled={ timeOver }
-                    className={ isClicked ? question.className : undefined }
+                    className={ `btn btn-primary btn-outline ${
+                      isClicked ? question.className : undefined
+                    } w-56` }
                     difficulty={ question.difficulty }
                   >
                     {question.answer}

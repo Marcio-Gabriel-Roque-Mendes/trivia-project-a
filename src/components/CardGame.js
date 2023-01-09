@@ -39,7 +39,7 @@ class CardGame extends React.Component {
         },
         ...result.incorrect_answers.map((wrong, i) => ({
           answer: wrong,
-          className: 'wrong-answer',
+          className: 'btn-error',
           dataTestId: `wrong-answer-${i}`,
           difficulty: result.difficulty,
         })),

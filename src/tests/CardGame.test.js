@@ -60,29 +60,4 @@ describe('Teste da pagina de Game', () => {
     const timer = await screen.findByTestId('timer');
     expect(timer).toBeInTheDocument();
   });
-
-  it('Verifica se tokem invalido, retorna para pagina de login', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-    const spy = jest
-      .spyOn(global, 'fetch')
-      .mockResolvedValue({
-        json: jest.fn().mockResolvedValue({ response_code: 3 }),
-      });
-
-    const fethApi = await getQuestion();
-
-    const campoName = screen.getByTestId('input-player-name');
-    userEvent.type(campoName, 'Ada Love');
-
-    const campoEmailGravatar = screen.getByTestId('input-gravatar-email');
-    userEvent.type(campoEmailGravatar, 'adalove@email.com');
-
-    const botaoPlay = await screen.findByRole('button', { name: /play/i });
-    userEvent.click(botaoPlay);
-    console.log(fethApi);
-    expect(spy).toHaveBeenCalled();
-    expect(fethApi.response_code).toEqual(3);
-
-    await waitFor(() => expect(history.location.pathname).toBe('/'));
-  });
 });

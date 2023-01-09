@@ -22,7 +22,7 @@ class CardGame extends React.Component {
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
-    const CORRECT = 'correct-answer';
+    const CORRECT = 'btn-success';
     const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {

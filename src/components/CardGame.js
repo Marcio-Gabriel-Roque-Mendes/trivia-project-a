@@ -75,7 +75,6 @@ class CardGame extends React.Component {
       this.startTimer(),
     );
     if (count === LAST_QUESTION) {
-      // this.savePlayerInRanking();
       history.push('/feedback');
     }
   };
@@ -100,7 +99,7 @@ class CardGame extends React.Component {
     const { dispatchScore } = this.props;
     const { secondsAmount } = this.state;
     const { className, difficulty } = item;
-    if (className === 'correct-answer') {
+    if (className.includes('correct-answer')) {
       const valor = POINT + secondsAmount * difficultyValue[difficulty];
       dispatchScore(valor);
     }

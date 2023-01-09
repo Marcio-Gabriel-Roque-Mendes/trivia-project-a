@@ -138,11 +138,7 @@ class CardGame extends React.Component {
     );
   }
 }
-// Só para commitar
 CardGame.propTypes = {
-  // name: PropTypes.string.isRequired,
-  // score: PropTypes.number.isRequired,
-  // gravatarEmail: PropTypes.string.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

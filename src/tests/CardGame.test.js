@@ -50,7 +50,6 @@ describe('Teste da pagina de Game', () => {
       userEvent.click(btnNext);
     }
 
-    // expect(history.location.pathname).toBe("/feedback")
     await waitFor(() => expect(history.location.pathname).toBe('/feedback'));
   });
 

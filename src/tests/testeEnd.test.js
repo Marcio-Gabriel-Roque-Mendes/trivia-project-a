@@ -22,8 +22,8 @@ describe('', () => {
     await waitFor(() => expect(history.location.pathname)
       .toBe('/game'), { timeout: 3000 });
 
-    const resposta = await screen.findByTestId('correct-answer', undefined, {
-      timeout: 2000,
+      const resposta = await screen.findByTestId('btn-success correct-answer', undefined, {
+        timeout: 2000,
     });
 
     const resposta2 = await screen.findByTestId('wrong-answer-0', undefined, {

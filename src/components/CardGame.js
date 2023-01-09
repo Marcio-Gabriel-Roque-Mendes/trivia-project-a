@@ -49,7 +49,7 @@ class CardGame extends React.Component {
         timeOver: false,
         secondsAmount: 30,
       }),
-      this.startTimer(),
+      this.startTimer()
     );
     if (count === LAST_QUESTION) {
       history.push('/feedback');
@@ -72,10 +72,12 @@ class CardGame extends React.Component {
       medium: 2,
       easy: 1,
     };
+
     const POINT = 10;
     const { dispatchScore } = this.props;
     const { secondsAmount } = this.state;
     const { className, difficulty } = item;
+    
     if (className.includes('correct-answer')) {
       const valor = POINT + secondsAmount * difficultyValue[difficulty];
       dispatchScore(valor);
@@ -93,7 +95,8 @@ class CardGame extends React.Component {
   };
 
   render() {
-    const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
+    const { questions, isClicked, secondsAmount, timeOver, answers, count } =
+      this.state;
     return (
       <div className='leading-8'>
         <p data-testid='meu-jogo'>Meu Jogo</p>
@@ -102,15 +105,14 @@ class CardGame extends React.Component {
         </span>
         {questions.length && (
           <div className='my-3'>
-            <p data-testid='question-category'>
-              {questions[count].category}
-            </p>
+            <p data-testid='question-category'>{questions[count].category}</p>
             <p data-testid='question-text' className='leading-6 h-12'>
               {questions[count].question}
             </p>
             <div
               data-testid='answer-options'
-              className='flex items-center justify-center flex-wrap h-24'>
+              className='flex items-center justify-center flex-wrap h-24'
+              >
               {answers[count].map(
                 (question) =>
                   question.answer && (
@@ -138,6 +140,7 @@ class CardGame extends React.Component {
     );
   }
 }
+
 CardGame.propTypes = {
   dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({

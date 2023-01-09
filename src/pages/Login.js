@@ -12,6 +12,10 @@ class Login extends Component {
     gravatarEmail: '',
   };
 
+  componentDidMount(){
+    document.title = 'Trivia'
+  }
+
   handleChange = ({ target }) => {
     this.setState({ [target.name]: target.value });
   };
@@ -21,7 +25,7 @@ class Login extends Component {
     dispatchLoginInfo({ ...this.state });
     history.push('/game');
   };
-
+  
   render() {
     const { name, gravatarEmail } = this.state;
     const { history } = this.props;

@@ -22,8 +22,7 @@ class CardGame extends React.Component {
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
-    const CORRECT = 'btn-success';
-    const token = getToken();
+    const CORRECT = 'btn-success correct-answer';    const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {
       localStorage.removeItem('token');
@@ -39,7 +38,7 @@ class CardGame extends React.Component {
         },
         ...result.incorrect_answers.map((wrong, i) => ({
           answer: wrong,
-          className: 'btn-error',
+          className: 'btn-error wrong-answer-${i}',
           dataTestId: `wrong-answer-${i}`,
           difficulty: result.difficulty,
         })),

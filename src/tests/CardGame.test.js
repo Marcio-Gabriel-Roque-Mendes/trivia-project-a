@@ -15,7 +15,7 @@ describe('Teste da pagina de Game', () => {
 
     const questionCategory = await screen.findByTestId('question-category');
     const question = await screen.findByTestId('question-text');
-    const resposta = await screen.findByTestId('correct-answer');
+    const resposta = await screen.findByTestId('btn-success correct-answer');
     userEvent.click(resposta);
     const btnNext = await screen.findByRole('button', { name: /next/i });
 
@@ -41,14 +41,13 @@ describe('Teste da pagina de Game', () => {
 
     for (let i = 0; i < 5; i += 1) {
       const resposta = await screen.findByTestId(
-        'correct-answer',
+        'btn-success correct-answer',
         undefined,
         3000,
       );
       userEvent.click(resposta);
       const btnNext = await screen.findByRole('button', { name: /next/i });
       userEvent.click(btnNext);
-      console.log(i);
     }
 
     // expect(history.location.pathname).toBe("/feedback")

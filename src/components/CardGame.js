@@ -6,8 +6,7 @@ import { getToken } from '../services/saveToken';
 import './CardGame.css';
 import NextButton from './NextButton';
 import { score as saveScore } from '../store/Actions';
-// import { addInRanking } from '../services/saveRanking';
-// import createEmailUrl from '../services/createEmailUrl';
+import shuffleAnswers from '../services/shuffleAnswers';
 
 class CardGame extends React.Component {
   state = {
@@ -22,29 +21,16 @@ class CardGame extends React.Component {
   async componentDidMount() {
     const { history } = this.props;
     const ERROR_CODE = 3;
-    const CORRECT = 'btn-success correct-answer';    const token = getToken();
+    const token = getToken();
     const response = await getQuestion(token);
     if (response.response_code === ERROR_CODE) {
       localStorage.removeItem('token');
       history.push('/');
     } else {
-      const SORT_NUMBER = 0.5;
-      const answerReceived = response.results.map((result) => [
-        {
-          answer: result.correct_answer,
-          className: CORRECT,
-          dataTestId: CORRECT,
-          difficulty: result.difficulty,
-        },
-        ...result.incorrect_answers.map((wrong, i) => ({
-          answer: wrong,
-          className: 'btn-error wrong-answer-${i}',
-          dataTestId: `wrong-answer-${i}`,
-          difficulty: result.difficulty,
-        })),
-      ].sort(() => SORT_NUMBER - Math.random()));
-
-      this.setState({ questions: response.results, answers: answerReceived });
+      this.setState({
+        questions: response.results,
+        answers: shuffleAnswers(response.results),
+      });
     }
     this.startTimer();
   }
@@ -118,39 +104,42 @@ class CardGame extends React.Component {
   render() {
     const { questions, isClicked, secondsAmount, timeOver, answers, count } = this.state;
     return (
-      <div className="leading-8">
-        <p data-testid="meu-jogo">Meu Jogo</p>
-        <span data-testid="timer">
+      <div className='leading-8'>
+        <p data-testid='meu-jogo'>Meu Jogo</p>
+        <span data-testid='timer'>
           {String(secondsAmount).padStart(2, '0')}
         </span>
         {questions.length && (
           <div className='my-3'>
-            <p data-testid="question-category">{questions[count].category}</p>
+            <p data-testid='question-category'>
+              {questions[count].category}
+            </p>
             <p data-testid='question-text' className='leading-6 h-12'>
               {questions[count].question}
             </p>
             <div
-              data-testid="answer-options"
-              className='flex items-center justify-center gap-2 flex-wrap my-6 h-24'>            
+              data-testid='answer-options'
+              className='flex items-center justify-center flex-wrap h-24'>
               {answers[count].map(
-                (question) => question.answer && (
-                  <button
-                    key={ question.dataTestId }
-                    type="button"
-                    data-testid={ question.dataTestId }
-                    onClick={ () => this.handleButtonClick(question) }
-                    disabled={ timeOver }
-                    className={ `btn btn-primary btn-outline ${
-                      isClicked ? question.className : undefined
-                    } w-80 `}
-                    difficulty={ question.difficulty }>
-                    {question.answer}
-                  </button>
-                ),
+                (question) =>
+                  question.answer && (
+                    <button
+                      key={question.dataTestId}
+                      type='button'
+                      data-testid={question.dataTestId}
+                      onClick={() => this.handleButtonClick(question)}
+                      disabled={timeOver}
+                      className={`btn btn-primary btn-outline ${
+                        isClicked ? question.className : undefined
+                      } w-1/2 my-3`}
+                      difficulty={question.difficulty}>
+                      {question.answer}
+                    </button>
+                  )
               )}
             </div>
-            <div className="h-16">
-              {isClicked && <NextButton onClick={ this.handleNextButton } />}
+            <div className='h-16'>
+              {isClicked && <NextButton onClick={this.handleNextButton} />}
             </div>
           </div>
         )}

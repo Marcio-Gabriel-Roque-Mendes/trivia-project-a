@@ -1,4 +1,8 @@
 # Trivia
+
+## :clapper: Prévia da aplicação rodando:
+https://user-images.githubusercontent.com/99992471/210459441-b383f4f7-6dab-4c7c-b910-52de13ba533f.mp4
+
 ## ✏ Sobre o projeto
 O objetivo do projeto é desenvolver uma aplicação de um jogo de <strong>trivia</strong> (jogo de perguntas e respostas), consumindo a API [The Trivia Api](https://the-trivia-api.com/) para a geração das perguntas. O projeto consiste em uma tela de login, tela do jogo, página de feedback e ranking. Se o usuário logar no jogo com o email que tiver cadastro no site Gravatar, terá sua foto associada ao perfil da pessoa usuária no jogo, logo na seqüência o usuário tem acesso ao jogo em si. :hourglass_flowing_sand:
 
@@ -81,8 +85,5 @@ src/tests
 Utilizamos a metodologia agil Kanban para a gestão de fluxo do nosso trabalho pelo Trello, em paralelo com outras ferramentas de comunicação assíncrona neste caso o Slack e comunicação síncrona sendo o Zoom para videochamada. 
 
 Mais informações dos colaboradores do projeto podem ser encontradas nessa [publicação feita no Linkedin.](https://www.linkedin.com/posts/marcio-gabriel-roque_frontend-react-redux-activity-7016201802920407040-wxwq?utm_source=share&utm_medium=member_desktop)
-
-## Prévia da aplicação rodando:
-https://user-images.githubusercontent.com/99992471/210459441-b383f4f7-6dab-4c7c-b910-52de13ba533f.mp4
 
 Código desenvolvido pelo grupo no projeto Trivia no curso de Desenvolvimento Full Stack da [Trybe](https://www.betrybe.com/) no qual os alunos deveriam desenvolve-lo para fins didáticos
